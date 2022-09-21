@@ -14,7 +14,9 @@ class App extends Component {
   componentDidMount() { 
     const contacts = localStorage.getItem('contacts');
     const parsedContacts = JSON.parse(contacts);
-    this.setState({contacts: parsedContacts});
+    if (parsedContacts) { 
+      this.setState({contacts: parsedContacts});
+    }
   }
 
   componentDidUpdate(prevProps, prevState) { 
@@ -24,7 +26,6 @@ class App extends Component {
   }
 
   formSubmitHandler = ({name, number}) => { 
-    console.log(name + ': ' + number);
     const { contacts } = this.state;
     const id = nanoid();
     const contactItem = {
@@ -50,14 +51,13 @@ class App extends Component {
   filteredContactList = () => {
     const { filterText, contacts } = this.state;
     const normilizedValue = filterText.toLowerCase().trim();
-    return contacts
-      .filter(contact =>
-        contact.name.toLowerCase().includes(normilizedValue))
-      .sort((a, b) => a.name.localeCompare(b.name));
-  };
+      return contacts
+        .filter(contact =>
+          contact.name.toLowerCase().includes(normilizedValue))
+        .sort((a, b) => a.name.localeCompare(b.name));
+    };
 
   changeFilter = (e) => { 
-    console.log(e.currentTarget.value)
     this.setState({ filterText: e.currentTarget.value });
   }
 
